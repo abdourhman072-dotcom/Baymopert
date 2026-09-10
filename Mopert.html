@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>روتيني اليومي | دليل تطوير الذات</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Tahoma, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* حاوية الصفحة */
+        .page {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            display: none; /* إخفاء جميع الصفحات افتراضياً */
+            animation: fadeIn 0.4s ease-in-out forwards; /* أنيميشن ظهور عادي وسلس */
+        }
+
+        /* الصفحة النشطة فقط هي التي تظهر */
+        .page.active {
+            display: block;
+        }
+
+        /* أنيميشن الظهور العادي السلس */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #2d3748;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        button.add-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        button.add-btn:active {
+            transform: scale(0.95);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        li span {
+            color: #2d3748;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .delete-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .delete-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* زر السهم العائم */
+        .nav-arrow-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-arrow-btn:active {
+            transform: scale(0.9);
+        }
+
+        .nav-arrow-btn svg {
+            width: 26px;
+            height: 26px;
+            fill: white;
+            transition: transform 0.3s ease;
+        }
+
+        /* تدوير السهم عند التحول للكتاب */
+        body.show-book .nav-arrow-btn svg {
+            transform: rotate(180deg);
+        }
+
+        .book-content {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        .book-content h2 {
+            color: #2b6cb0;
+            margin: 18px 0 8px 0;
+            font-size: 18px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+        }
+
+        .book-content p {
+            margin-bottom: 12px;
+        }
+
+        /* كرت فيديو يوتيوب */
+        .youtube-card {
+            background: #fff0f0;
+            border: 2px solid #ff4d4d;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .youtube-card h3 {
+            color: #cc0000;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .youtube-btn {
+            display: inline-block;
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 8px;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .youtube-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .youtube-btn:active {
+            transform: scale(0.95);
+        }
+
+        .back-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. صفحة الروتين اليومي -->
+    <div class="page active" id="routinePage">
+        <div class="header">
+            <h1>✨ روتيني اليومي</h1>
+            <p>خطوات صغيرة لإنشاء حياة أفضل</p>
+        </div>
+
+        <div class="input-box">
+            <input type="text" id="routineInput" placeholder="أضف عادة أو روتين جديد...">
+            <button class="add-btn" onclick="addRoutine()">إضافة</button>
+        </div>
+
+        <ul id="routineList">
+            <li>
+                <span>💧 شرب كاسين من الماء صباحاً</span>
+                <button class="delete-btn" onclick="removeRoutine(this)">حذف</button>
+            </li>
+            <li>
+                <span>📖 قراءة 10 صفحات من كتاب</span>
+                <button class="delete-btn" onclick="removeRoutine(this)">حذف</button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 2. صفحة كتاب تعلم الروتينات -->
+    <div class="page" id="bookPage">
+        <button class="back-btn" onclick="togglePage()">➡️ العودة للروتين</button>
+        
+        <div class="header">
+            <h1>📖 دليل بناء العادات والروتينات</h1>
+            <p>كيف تبني روتيناً مستداماً يغير حياتك</p>
+        </div>
+
+        <div class="book-content">
+            <h2>المقدمة: قوة العادات الصغرى</h2>
+            <p>
+                إن التغيير الحقيقي والتحسين المستمر في الحياة لا يأتي نتيجة لقفزات كبيرة أو قرارات مفاجئة، بل ينبع من العادات والتصرفات الصغيرة التي نكررها يومياً.
+            </p>
+
+            <!-- بطاقة فيديو يوتيوب -->
+            <div class="youtube-card">
+                <h3>🎥 روتين صباحي وزيادة الإنتاجية للشباب</h3>
+                <p>شاهد هذا الفيديو لتعلّم كيفية تنظيم الوقت والروتين الصباحي بشكل عملي:</p>
+                <a href="https://www.youtube.com/watch?v=BebTPZqHBFM" target="_blank" class="youtube-btn">
+                    ▶️ مشاهدة الفيديو على YouTube
+                </a>
+            </div>
+
+            <h2>الفصل الأول: روتين الصباح الناجح</h2>
+            <p>
+                طريقة بدئك ليومك تحدد وتوجه بقية ساعاتك. يبدأ الروتين الصباحي الفعال قبل الخروج من السرير، وأهم خطوة هي تجنب تفقد الهاتف فور الاستيقاظ.
+            </p>
+
+            <h2>الفصل الثاني: قاعدة الـ 21 يوماً للالتزام</h2>
+            <p>
+                تظهر الأبحاث أن العقل البشري يحتاج إلى فترة تتراوح بين 21 و 66 يوماً لتكوين مسار عصبي جديد وتثبيت روتين جديد في حياتك.
+            </p>
+
+            <h2>الفصل الثالث: روتين المساء والنوم العميق</h2>
+            <p>
+                لضمان الحصول على نوم عميق ومريح، ينصح بالابتعاد عن الشاشات والأجهزة الإلكترونية قبل النوم بساعة كاملة، واستبدالها بالقراءة الخفيفة.
+            </p>
+        </div>
+    </div>
+
+    <!-- زر السهم التنقّلي -->
+    <button class="nav-arrow-btn" onclick="togglePage()" title="انتقل إلى الصفحة الأخرى">
+        <svg viewBox="0 0 24 24">
+            <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+        </svg>
+    </button>
+
+    <script>
+        function togglePage() {
+            const routinePage = document.getElementById("routinePage");
+            const bookPage = document.getElementById("bookPage");
+
+            routinePage.classList.toggle("active");
+            bookPage.classList.toggle("active");
+            document.body.classList.toggle("show-book");
+        }
+
+        function addRoutine() {
+            let input = document.getElementById("routineInput");
+            let text = input.value.trim();
+
+            if (text !== "") {
+                let ul = document.getElementById("routineList");
+                let li = document.createElement("li");
+
+                li.innerHTML = `
+                    <span>${text}</span>
+                    <button class="delete-btn" onclick="removeRoutine(this)">حذف</button>
+                `;
+
+                ul.appendChild(li);
+                input.value = "";
+            } else {
+                alert("يرجى كتابة الروتين أولاً!");
+            }
+        }
+
+        function removeRoutine(button) {
+            button.parentElement.remove();
+        }
+    </script>
+
+</body>
+              </html>
+              
